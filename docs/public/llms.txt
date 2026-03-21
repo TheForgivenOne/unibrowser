@@ -1,0 +1,80 @@
+# unibrowser
+
+> Headless cross-browser E2E testing for TypeScript. Write one test, run it across Chromium, Firefox, and Safari (WebKit) with full type safety.
+
+## What is unibrowser
+
+unibrowser is an open-source npm package that wraps Playwright with a simpler, fully-typed API for headless cross-browser E2E testing. It lets developers write a single test suite that automatically runs across Chromium, Firefox, and WebKit (Safari) without managing browser lifecycle boilerplate.
+
+## Key Features
+
+- **crossBrowserSuite()** — write one test, automatically run across 3 browsers
+- **UniBrowser, UniPage, UniElement** — typed wrapper classes with IntelliSense
+- **Built-in assertions** — expectTitle(), expectVisible(), expectText(), expectURL()
+- **Screenshot capture** — PNG/JPEG, full page, element-level, visual regression
+- **Browser management** — auto-download browsers via ensureAll()
+- **CI/CD ready** — GitHub Actions workflows included, headless by default
+- **Pyright support** — Python type stubs for interop
+
+## Browsers Supported
+
+| Browser | Engine | Status |
+|---------|--------|--------|
+| Chrome | Chromium | Supported |
+| Edge | Chromium | Supported |
+| Firefox | Firefox | Supported |
+| Safari | WebKit | Supported |
+
+## Documentation
+
+- [Getting Started](https://theforgivenone.github.io/unibrowser/getting-started)
+- [API Reference](https://theforgivenone.github.io/unibrowser/api/unibrowser)
+- [Cross-Browser Testing Guide](https://theforgivenone.github.io/unibrowser/guides/cross-browser)
+- [Assertions Guide](https://theforgivenone.github.io/unibrowser/guides/assertions)
+- [Screenshots & Visual Regression](https://theforgivenone.github.io/unibrowser/guides/screenshots)
+- [Network Interception](https://theforgivenone.github.io/unibrowser/guides/network)
+- [CI/CD Setup](https://theforgivenone.github.io/unibrowser/guides/ci-cd)
+- [Configuration Reference](https://theforgivenone.github.io/unibrowser/reference/config)
+- [TypeScript Types](https://theforgivenone.github.io/unibrowser/reference/types)
+- [Pyright Integration](https://theforgivenone.github.io/unibrowser/pyright)
+
+## Install
+
+```bash
+npm install unibrowser
+npx playwright install chromium firefox webkit
+```
+
+## Quick Example
+
+```typescript
+import { crossBrowserSuite } from "unibrowser";
+
+crossBrowserSuite("My App", (test) => {
+  test("loads homepage", async ({ page }) => {
+    await page.goto("https://example.com");
+    await page.expectTitle("Example Domain");
+    const h1 = page.locator("h1");
+    await h1.expectText("Example Domain");
+  });
+});
+```
+
+## API Classes
+
+- **UniBrowser** — launch, newPage, newContext, close
+- **UniPage** — goto, locator, getByRole, getByText, evaluate, screenshot
+- **UniElement** — click, type, hover, check, isVisible, expectText
+- **UniContext** — cookies, route, setOffline, permissions
+
+## Links
+
+- GitHub: https://github.com/TheForgivenOne/unibrowser
+- NPM: https://www.npmjs.com/package/unibrowser
+- Documentation: https://theforgivenone.github.io/unibrowser
+- License: Apache 2.0
+- Version: 0.1.0
+
+## Maintainer
+
+- successmove000 (successmove000@gmail.com)
