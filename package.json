@@ -1,7 +1,7 @@
 {
   "name": "unibrowser",
   "version": "0.1.0",
-  "description": "Headless cross-browser E2E testing with full type safety",
+  "description": "Headless cross-browser E2E testing with full type safety | Docs: https://theforgivenone.github.io/unibrowser/",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
