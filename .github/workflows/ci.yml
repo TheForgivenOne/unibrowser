@@ -51,8 +51,8 @@ jobs:
       - run: npm ci
       - run: npx vitest run tests/unit
 
-  e2e-chromium:
-    name: E2E - Chromium
+  e2e-tests:
+    name: E2E Tests (Chromium + Firefox + WebKit)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -67,64 +67,10 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-      - name: Install Chromium
+      - name: Install all browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps chromium
-      - name: Install system deps
+        run: npx playwright install --with-deps chromium firefox webkit
+      - name: Install system deps (cached)
         if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: npx playwright install-deps chromium
+        run: npx playwright install-deps chromium firefox webkit
       - run: npx vitest run tests/e2e --reporter=verbose
-        env:
-          BROWSER: chromium
-
-  e2e-firefox:
-    name: E2E - Firefox
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-      - run: npm ci
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4
-        id: playwright-cache
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-      - name: Install Firefox
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps firefox
-      - name: Install system deps
-        if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: npx playwright install-deps firefox
-      - run: npx vitest run tests/e2e --reporter=verbose
-        env:
-          BROWSER: firefox
-
-  e2e-webkit:
-    name: E2E - WebKit (Safari)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-      - run: npm ci
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4
-        id: playwright-cache
-        with:
-          path: ~/.cache/ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-      - name: Install WebKit
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: npx playwright install --with-deps webkit
-      - name: Install system deps
-        if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: npx playwright install-deps webkit
-      - run: npx vitest run tests/e2e --reporter=verbose
-        env:
-          BROWSER: webkit
