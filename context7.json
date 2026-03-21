@@ -1,19 +1,4 @@
 {
-  "$schema": "https://context7.com/schema/context7.json",
   "url": "https://context7.com/theforgivenone/unibrowser",
-  "public_key": "pk_TfhE2EH7ADzaMOBE1oAmC",
-  "projectTitle": "unibrowser",
-  "description": "Headless cross-browser E2E testing for TypeScript. Write one test, run it across Chromium, Firefox, and Safari (WebKit) with full type safety.",
-  "folders": ["docs", "src"],
-  "excludeFolders": ["node_modules", "dist", "tests", "screenshots"],
-  "excludeFiles": ["package-lock.json", "tsconfig.json", "vitest.config.ts"],
-  "rules": [
-    "Use crossBrowserSuite() to write tests that run across Chromium, Firefox, and WebKit",
-    "Use page.locator() to find elements by CSS selector",
-    "Use page.expectTitle(), page.expectURL(), element.expectVisible() for assertions",
-    "Use ensureAll() to auto-install browsers and system dependencies",
-    "The testing module is at src/testing/cross-browser.ts",
-    "Always import from 'unibrowser' package",
-    "TypeScript ESM only, require module: Node16 in tsconfig"
-  ]
+  "public_key": "pk_TfhE2EH7ADzaMOBE1oAmC"
 }
