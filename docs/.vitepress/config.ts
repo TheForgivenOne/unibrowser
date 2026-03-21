@@ -22,6 +22,7 @@ export default defineConfig({
       {
         src: "https://context7.com/widget.js",
         "data-library": "/theforgivenone/unibrowser",
+        defer: "",
       },
     ],
   ],
