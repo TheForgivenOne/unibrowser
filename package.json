@@ -31,6 +31,14 @@
   ],
   "author": "",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheForgivenOne/unibrowser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TheForgivenOne/unibrowser/issues"
+  },
+  "homepage": "https://theforgivenone.github.io/unibrowser/",
   "type": "module",
   "exports": {
     ".": {

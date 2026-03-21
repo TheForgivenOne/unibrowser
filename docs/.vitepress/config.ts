@@ -31,7 +31,7 @@ export default defineConfig({
         items: [
           {
             text: "Changelog",
-            link: "https://github.com/nicetomeetyou25/unibrowser/releases",
+            link: "https://github.com/TheForgivenOne/unibrowser/releases",
           },
           {
             text: "NPM",
@@ -86,7 +86,7 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: "github", link: "https://github.com/nicetomeetyou25/unibrowser" },
+      { icon: "github", link: "https://github.com/TheForgivenOne/unibrowser" },
       { icon: "npm", link: "https://www.npmjs.com/package/unibrowser" },
     ],
 
@@ -96,7 +96,7 @@ export default defineConfig({
 
     editLink: {
       pattern:
-        "https://github.com/nicetomeetyou25/unibrowser/edit/main/docs/:path",
+        "https://github.com/TheForgivenOne/unibrowser/edit/main/docs/:path",
       text: "Edit this page on GitHub",
     },
 

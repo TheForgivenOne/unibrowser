@@ -14,7 +14,7 @@ hero:
       link: /getting-started
     - theme: alt
       text: View on GitHub
-      link: https://github.com/nicetomeetyou25/unibrowser
+      link: https://github.com/TheForgivenOne/unibrowser
 
 features:
   - icon: 🌐
