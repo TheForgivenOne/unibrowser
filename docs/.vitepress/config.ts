@@ -17,6 +17,13 @@ export default defineConfig({
           "Headless cross-browser E2E testing for TypeScript. One test, three browsers.",
       },
     ],
+    [
+      "script",
+      {
+        src: "https://context7.com/widget.js",
+        "data-library": "/theforgivenone/unibrowser",
+      },
+    ],
   ],
 
   themeConfig: {
