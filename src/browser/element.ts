@@ -124,6 +124,34 @@ export class UniElement {
     return new UniElement(this._locator.locator(selector), this._page);
   }
 
+  filter(options: { hasText?: string | RegExp; hasNotText?: string | RegExp; has?: UniElement }): UniElement {
+    const pwOpts: { hasText?: string | RegExp; hasNotText?: string | RegExp; has?: PlaywrightLocator } = {};
+    if (options.hasText !== undefined) pwOpts.hasText = options.hasText;
+    if (options.hasNotText !== undefined) pwOpts.hasNotText = options.hasNotText;
+    if (options.has !== undefined) pwOpts.has = options.has.raw;
+    return new UniElement(this._locator.filter(pwOpts), this._page);
+  }
+
+  getByRole(role: string, options?: { name?: string | RegExp; exact?: boolean }): UniElement {
+    return new UniElement(this._locator.getByRole(role as never, options as never), this._page);
+  }
+
+  getByText(text: string | RegExp): UniElement {
+    return new UniElement(this._locator.getByText(text), this._page);
+  }
+
+  getByLabel(text: string | RegExp, options?: { exact?: boolean }): UniElement {
+    return new UniElement(this._locator.getByLabel(text, options), this._page);
+  }
+
+  getByPlaceholder(text: string | RegExp): UniElement {
+    return new UniElement(this._locator.getByPlaceholder(text), this._page);
+  }
+
+  getByTestId(testId: string): UniElement {
+    return new UniElement(this._locator.getByTestId(testId), this._page);
+  }
+
   async expectVisible(message?: string): Promise<void> {
     await this.waitFor({ state: "visible" });
     const visible = await this.isVisible();

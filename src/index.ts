@@ -37,7 +37,7 @@ export {
 } from "./browser/index.js";
 
 export { loadConfig, DEFAULTS, resolveBrowserType } from "./config/index.js";
-export type { UniBrowserConfig } from "./config/index.js";
+export type { UniBrowserConfig, WaitUntil } from "./config/index.js";
 
 export {
   waitFor,
@@ -65,5 +65,5 @@ export type { RetryWaitOptions, CompareResult } from "./utils/index.js";
 export { createLogger, getLogger, setLogLevel } from "./utils/index.js";
 export type { Logger, LogLevel } from "./utils/index.js";
 
-export { crossBrowserSuite, ALL_BROWSERS } from "./testing/index.js";
-export type { CrossBrowserContext } from "./testing/index.js";
+export { crossBrowserSuite, ALL_BROWSERS, closeSharedBrowsers } from "./testing/index.js";
+export type { CrossBrowserContext, CrossBrowserSuiteOptions } from "./testing/index.js";

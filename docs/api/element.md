@@ -13,6 +13,63 @@ const form = page.locator("form");
 const email = form.locator('input[name="email"]');
 ```
 
+### `locator.filter(options)`
+
+Filter matching elements by text or nested element.
+
+```typescript
+// Filter by text content
+const item = page.locator("li").filter({ hasText: "Buy milk" });
+
+// Filter by nested element
+const row = page.locator("tr").filter({ has: page.getByRole("cell", { name: "Status" }) });
+
+// Exclude by text
+const items = page.locator("li").filter({ hasNotText: "Completed" });
+```
+
+| Option | Type | Description |
+|---|---|---|
+| `hasText` | `string \| RegExp` | Keep elements with matching text |
+| `hasNotText` | `string \| RegExp` | Exclude elements with matching text |
+| `has` | `UniElement` | Keep elements containing this child |
+
+### `locator.getByRole(role, options?)`
+
+Find by ARIA role within scoped element.
+
+```typescript
+const form = page.locator("#login");
+const heading = form.getByRole("heading", { name: "Sign in" });
+const button = form.getByRole("button", { name: "Submit" });
+```
+
+### `locator.getByText(text)`
+
+Find by visible text within scoped element.
+
+```typescript
+const sidebar = page.locator("aside");
+const link = sidebar.getByText("Settings");
+```
+
+### `locator.getByLabel(text, options?)`
+
+Find by label text within scoped element.
+
+### `locator.getByPlaceholder(text)`
+
+Find by placeholder within scoped element.
+
+### `locator.getByTestId(testId)`
+
+Find by `data-testid` within scoped element.
+
+```typescript
+const card = page.locator('[data-testid="product-card"]');
+const title = card.getByTestId("product-title");
+```
+
 ### `locator.first()` / `locator.last()` / `locator.nth(index)`
 
 Get specific elements from a group.

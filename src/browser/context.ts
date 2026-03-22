@@ -2,18 +2,20 @@ import type {
   BrowserContext as PlaywrightContext,
   Route as PlaywrightRoute,
 } from "playwright";
+import type { WaitUntil } from "../config/config.js";
 import { UniPage } from "./page.js";
 
 export class UniContext {
   constructor(
     public readonly raw: PlaywrightContext,
     private readonly _defaultTimeout: number,
+    private readonly _defaultWaitUntil: WaitUntil,
   ) {}
 
   async newPage(): Promise<UniPage> {
     const page = await this.raw.newPage();
     page.setDefaultTimeout(this._defaultTimeout);
-    return new UniPage(page, this._defaultTimeout);
+    return new UniPage(page, this._defaultTimeout, this._defaultWaitUntil);
   }
 
   async close(): Promise<void> {
@@ -21,7 +23,7 @@ export class UniContext {
   }
 
   pages(): UniPage[] {
-    return this.raw.pages().map((p) => new UniPage(p, this._defaultTimeout));
+    return this.raw.pages().map((p) => new UniPage(p, this._defaultTimeout, this._defaultWaitUntil));
   }
 
   async cookies(urls?: string[]): Promise<never[]> {

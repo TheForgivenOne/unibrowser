@@ -231,6 +231,28 @@ interface CrossBrowserContext {
 }
 ```
 
+### `CrossBrowserSuiteOptions`
+
+```typescript
+interface CrossBrowserSuiteOptions {
+  browsers?: BrowserName[];
+  sharedBrowser?: boolean;
+  parallel?: boolean;
+}
+```
+
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `browsers` | `BrowserName[]` | all 3 | Browsers to test on |
+| `sharedBrowser` | `boolean` | `true` | Reuse browsers via pool across files |
+| `parallel` | `boolean` | `false` | Run tests concurrently per browser |
+
+### `WaitUntil`
+
+```typescript
+type WaitUntil = "load" | "domcontentloaded" | "networkidle" | "commit";
+```
+
 ## Utils
 
 ### `RetryWaitOptions`

@@ -2,6 +2,7 @@ import type { BrowserName, BrowserLaunchOptions } from "./types.js";
 import type { Browser as PlaywrightBrowser } from "playwright";
 import { chromium, firefox, webkit } from "playwright";
 import { resolveBrowserType } from "../config/config.js";
+import type { WaitUntil } from "../config/config.js";
 import { validateBrowser } from "./manager.js";
 import { getLogger } from "../utils/logger.js";
 import { UniContext } from "./context.js";
@@ -28,11 +29,12 @@ export class UniBrowser {
     public readonly raw: PlaywrightBrowser,
     public readonly name: BrowserName,
     private readonly _defaultTimeout: number,
+    private readonly _defaultWaitUntil: WaitUntil,
   ) {}
 
   static async launch(
     browser: BrowserName,
-    options?: BrowserLaunchOptions,
+    options?: BrowserLaunchOptions & { waitUntil?: WaitUntil },
   ): Promise<UniBrowser> {
     const log = getLogger();
 
@@ -41,6 +43,7 @@ export class UniBrowser {
 
     const engine = ENGINES[resolveBrowserType(browser)];
     const defaultTimeout = 10_000;
+    const defaultWaitUntil: WaitUntil = options?.waitUntil ?? "load";
     const headless = options?.headless ?? true;
 
     const launchOpts: LaunchOpts = { headless };
@@ -53,12 +56,12 @@ export class UniBrowser {
 
     log.info(`${browser} launched (pid: ${pwBrowser.contexts().length} contexts)`);
 
-    return new UniBrowser(pwBrowser, browser, defaultTimeout);
+    return new UniBrowser(pwBrowser, browser, defaultTimeout, defaultWaitUntil);
   }
 
   static async ensureAndLaunch(
     browser: BrowserName,
-    options?: BrowserLaunchOptions,
+    options?: BrowserLaunchOptions & { waitUntil?: WaitUntil },
   ): Promise<UniBrowser> {
     const log = getLogger();
     log.info(`Ensuring ${browser} is installed...`);
@@ -94,7 +97,7 @@ export class UniBrowser {
 
     const pwContext = await this.raw.newContext(ctxOpts);
 
-    return new UniContext(pwContext, this._defaultTimeout);
+    return new UniContext(pwContext, this._defaultTimeout, this._defaultWaitUntil);
   }
 
   async newPage(options?: {
@@ -123,7 +126,7 @@ export class UniBrowser {
 
   async contexts(): Promise<UniContext[]> {
     return this.raw.contexts().map(
-      (ctx) => new UniContext(ctx, this._defaultTimeout),
+      (ctx) => new UniContext(ctx, this._defaultTimeout, this._defaultWaitUntil),
     );
   }
 

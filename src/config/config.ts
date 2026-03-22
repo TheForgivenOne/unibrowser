@@ -5,6 +5,8 @@ import type {
   ViewportConfig,
 } from "../browser/types.js";
 
+export type WaitUntil = "load" | "domcontentloaded" | "networkidle" | "commit";
+
 export interface UniBrowserConfig {
   defaultBrowser: BrowserName;
   headless: boolean;
@@ -16,6 +18,7 @@ export interface UniBrowserConfig {
     action: number;
     expect: number;
   };
+  waitUntil: WaitUntil;
   retries: number;
   browsers: Record<BrowserName, BrowserLaunchOptions>;
 }
@@ -36,6 +39,7 @@ export const DEFAULTS: UniBrowserConfig = {
     action: 10_000,
     expect: 5_000,
   },
+  waitUntil: "load",
   retries: 0,
   browsers: {
     chromium: {},
@@ -67,6 +71,7 @@ export function loadConfig(overrides?: Partial<UniBrowserConfig>): UniBrowserCon
       ...DEFAULTS.timeout,
       ...(overrides?.timeout ?? {}),
     },
+    waitUntil: overrides?.waitUntil ?? DEFAULTS.waitUntil,
     viewport: {
       ...DEFAULTS.viewport,
       ...(overrides?.viewport ?? {}),

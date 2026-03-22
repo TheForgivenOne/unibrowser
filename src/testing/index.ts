@@ -1,2 +1,2 @@
-export { crossBrowserSuite, ALL_BROWSERS } from "./cross-browser.js";
-export type { CrossBrowserContext } from "./cross-browser.js";
+export { crossBrowserSuite, ALL_BROWSERS, closeSharedBrowsers } from "./cross-browser.js";
+export type { CrossBrowserContext, CrossBrowserSuiteOptions } from "./cross-browser.js";

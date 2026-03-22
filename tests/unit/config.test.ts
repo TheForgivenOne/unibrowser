@@ -9,6 +9,7 @@ describe("config", () => {
     expect(config.viewport.width).toBe(1280);
     expect(config.viewport.height).toBe(720);
     expect(config.timeout.navigation).toBe(30_000);
+    expect(config.waitUntil).toBe("load");
   });
 
   it("merges overrides with defaults", () => {
@@ -22,6 +23,7 @@ describe("config", () => {
     expect(config.viewport.width).toBe(1920);
     expect(config.viewport.height).toBe(1080);
     expect(config.timeout.navigation).toBe(30_000);
+    expect(config.waitUntil).toBe("load");
   });
 
   it("merges timeout overrides", () => {
@@ -31,6 +33,16 @@ describe("config", () => {
     expect(config.timeout.navigation).toBe(60_000);
     expect(config.timeout.action).toBe(15_000);
     expect(config.timeout.expect).toBe(10_000);
+  });
+
+  it("overrides waitUntil", () => {
+    const config = loadConfig({ waitUntil: "domcontentloaded" });
+    expect(config.waitUntil).toBe("domcontentloaded");
+  });
+
+  it("preserves default waitUntil when not overridden", () => {
+    const config = loadConfig({ headless: false });
+    expect(config.waitUntil).toBe("load");
   });
 
   it("defaults are not mutated", () => {

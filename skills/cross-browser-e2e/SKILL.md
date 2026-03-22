@@ -74,6 +74,30 @@ const input = page.getByPlaceholder("Enter email");
 const el = page.getByTestId("login-button");
 ```
 
+## Scoping & Filtering
+
+```typescript
+// Scope to child element
+const form = page.locator("#login");
+const email = form.locator('input[name="email"]');
+
+// Filter by text
+const item = page.locator("li").filter({ hasText: "Buy milk" });
+
+// Filter by nested element
+const row = page.locator("tr").filter({ has: page.getByRole("cell", { name: "Done" }) });
+
+// Semantic locators work on scoped elements
+const heading = form.getByRole("heading", { name: "Sign in" });
+const button = form.getByRole("button", { name: "Submit" });
+
+// Find element containing another element
+const div = page.locator("div", { has: page.getByRole("heading") });
+
+// Access underlying Playwright locator
+const pwLocator = page.locator("h1").raw;
+```
+
 ## Element Interactions
 
 ```typescript
@@ -168,7 +192,12 @@ crossBrowserSuite("Quick Test", (test) => {
   test("works", async ({ page }) => {
     await page.goto("https://example.com");
   });
-}, ["chromium", "firefox"]);
+}, { browsers: ["chromium", "firefox"] });
+```
+
+Or via environment variable:
+```bash
+UNIBROWSER_BROWSERS=chromium npm run test:e2e
 ```
 
 ## Network Interception
@@ -208,6 +237,35 @@ tests/
 npx vitest run              # All tests
 npx vitest run tests/e2e    # E2E only
 npx vitest                  # Watch mode
+
+# Browser-specific
+npm run test:chromium        # Chromium only
+npm run test:firefox         # Firefox only
+npm run test:webkit          # WebKit only
+```
+
+## Speed Optimization
+
+Use a single-thread Vitest config for browser pool reuse (~3x faster):
+
+```typescript
+// vitest.config.ts
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
+  test: {
+    pool: "threads",
+    poolOptions: {
+      threads: { singleThread: true },
+    },
+  },
+});
+```
+
+For SPAs, set `waitUntil: "domcontentloaded"` for faster navigation:
+
+```typescript
+const browser = await UniBrowser.launch("chromium", { waitUntil: "domcontentloaded" });
 ```
 
 ## TypeScript Config

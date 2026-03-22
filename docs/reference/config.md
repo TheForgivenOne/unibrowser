@@ -14,6 +14,7 @@ import { DEFAULTS } from "unibrowser";
 //   devtools: false,
 //   viewport: { width: 1280, height: 720 },
 //   timeout: { navigation: 30000, action: 10000, expect: 5000 },
+//   waitUntil: "load",
 //   retries: 0,
 //   browsers: { chromium: {}, chrome: {}, edge: {}, firefox: {}, safari: {}, webkit: {} },
 // }
@@ -38,6 +39,23 @@ const config = loadConfig({
 // config.defaultBrowser === "chromium" (from defaults)
 ```
 
+### `waitUntil` for SPAs
+
+For single-page apps (Next.js, React, etc.), `"domcontentloaded"` is faster than the default `"load"`:
+
+```typescript
+const config = loadConfig({
+  waitUntil: "domcontentloaded",
+});
+```
+
+| Value | Description |
+|---|---|
+| `"load"` | Wait for all resources (images, fonts, etc.) — default |
+| `"domcontentloaded"` | Wait for HTML to parse — faster for SPAs |
+| `"networkidle"` | Wait for no network activity for 500ms |
+| `"commit"` | Wait for the first byte of the response |
+
 ### `UniBrowserConfig`
 
 | Field | Type | Default | Description |
@@ -50,6 +68,7 @@ const config = loadConfig({
 | `timeout.navigation` | `number` | `30000` | Navigation timeout (ms) |
 | `timeout.action` | `number` | `10000` | Action timeout (ms) |
 | `timeout.expect` | `number` | `5000` | Assertion timeout (ms) |
+| `waitUntil` | `WaitUntil` | `"load"` | Default load strategy for navigation |
 | `retries` | `number` | `0` | Retry count |
 | `browsers` | `Record<BrowserName, BrowserLaunchOptions>` | `{}` | Per-browser options |
 

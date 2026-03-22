@@ -59,4 +59,38 @@ crossBrowserSuite("Locators", (test) => {
     const text = await h1.innerText();
     expect(text).toBe("Example Domain");
   });
+
+  test("filters elements by text", async ({ page }) => {
+    await page.goto("http://example.com");
+    const link = page.locator("a").filter({ hasText: "Learn more" });
+    const text = await link.innerText();
+    expect(text).toContain("Learn more");
+  });
+
+  test("filters elements by has option", async ({ page }) => {
+    await page.goto("http://example.com");
+    const divWithHeading = page.locator("div").filter({ has: page.getByRole("heading") });
+    expect(await divWithHeading.isVisible()).toBe(true);
+  });
+
+  test("getByRole on scoped element", async ({ page }) => {
+    await page.goto("http://example.com");
+    const body = page.locator("body");
+    const heading = body.getByRole("heading");
+    const text = await heading.innerText();
+    expect(text).toBe("Example Domain");
+  });
+
+  test("getByText on scoped element", async ({ page }) => {
+    await page.goto("http://example.com");
+    const body = page.locator("body");
+    const el = body.getByText("Example Domain");
+    expect(await el.isVisible()).toBe(true);
+  });
+
+  test("locator with has option", async ({ page }) => {
+    await page.goto("http://example.com");
+    const div = page.locator("div", { has: page.getByRole("heading") });
+    expect(await div.isVisible()).toBe(true);
+  });
 });

@@ -10,6 +10,7 @@ import type {
   WaitOptions,
   LocatorOptions,
 } from "./types.js";
+import type { WaitUntil } from "../config/config.js";
 import { UniElement } from "./element.js";
 import { captureScreenshot, assertScreenshotMatches } from "../utils/screenshots.js";
 import { assertEqual, assertContains, assertMatch } from "../utils/assertions.js";
@@ -18,11 +19,12 @@ export class UniPage {
   constructor(
     public readonly raw: PlaywrightPage,
     private readonly _defaultTimeout: number,
+    private readonly _defaultWaitUntil: WaitUntil,
   ) {}
 
   async goto(url: string, options?: GotoOptions): Promise<PlaywrightResponse | null> {
     const gotoOpts: { waitUntil?: "load" | "domcontentloaded" | "networkidle" | "commit"; timeout?: number; referer?: string } = {
-      waitUntil: options?.waitUntil ?? "load",
+      waitUntil: options?.waitUntil ?? this._defaultWaitUntil,
       timeout: options?.timeout ?? this._defaultTimeout,
     };
     if (options?.referer !== undefined) gotoOpts.referer = options.referer;
@@ -30,9 +32,10 @@ export class UniPage {
   }
 
   locator(selector: string, options?: LocatorOptions): UniElement {
-    const pwOpts: { hasText?: string | RegExp; hasNotText?: string | RegExp } = {};
+    const pwOpts: { hasText?: string | RegExp; hasNotText?: string | RegExp; has?: import("playwright").Locator } = {};
     if (options?.hasText !== undefined) pwOpts.hasText = options.hasText;
     if (options?.hasNotText !== undefined) pwOpts.hasNotText = options.hasNotText;
+    if (options?.has !== undefined) pwOpts.has = options.has.raw;
     const pwLocator = this.raw.locator(selector, pwOpts);
     return new UniElement(pwLocator, this.raw);
   }
@@ -107,19 +110,19 @@ export class UniPage {
 
   async reload(options?: { waitUntil?: GotoOptions["waitUntil"] }): Promise<PlaywrightResponse | null> {
     return this.raw.reload({
-      waitUntil: options?.waitUntil ?? "load",
+      waitUntil: options?.waitUntil ?? this._defaultWaitUntil,
     });
   }
 
   async goBack(options?: { waitUntil?: GotoOptions["waitUntil"] }): Promise<PlaywrightResponse | null> {
     return this.raw.goBack({
-      waitUntil: options?.waitUntil ?? "load",
+      waitUntil: options?.waitUntil ?? this._defaultWaitUntil,
     });
   }
 
   async goForward(options?: { waitUntil?: GotoOptions["waitUntil"] }): Promise<PlaywrightResponse | null> {
     return this.raw.goForward({
-      waitUntil: options?.waitUntil ?? "load",
+      waitUntil: options?.waitUntil ?? this._defaultWaitUntil,
     });
   }
 

@@ -81,7 +81,27 @@ crossBrowserSuite("Quick Test", (test) => {
   test("works", async ({ page }) => {
     await page.goto("https://example.com");
   });
-}, ["chromium", "firefox"]);
+}, { browsers: ["chromium", "firefox"] });
+```
+
+### Environment Variable
+
+Override browsers globally without changing code:
+
+```bash
+# Run only Chromium
+UNIBROWSER_BROWSERS=chromium npm run test:e2e
+
+# Run Chromium + Firefox (skip WebKit)
+UNIBROWSER_BROWSERS=chromium,firefox npm run test:e2e
+```
+
+### npm Scripts
+
+```bash
+npm run test:chromium   # Chromium only
+npm run test:firefox    # Firefox only
+npm run test:webkit     # WebKit only
 ```
 
 ## Full Example: Login Flow
@@ -118,6 +138,49 @@ crossBrowserSuite("Authentication", (test) => {
 ```
 
 This runs 9 tests total (3 tests x 3 browsers).
+
+## Speed Options
+
+### `parallel: true`
+
+Run tests concurrently within each browser suite. Each test gets its own isolated browser instance.
+
+```typescript
+crossBrowserSuite("Fast Tests", (test) => {
+  test("test A", async ({ page }) => { ... });
+  test("test B", async ({ page }) => { ... });
+}, { browsers: ["chromium"], parallel: true });
+```
+
+### `sharedBrowser: true` (default)
+
+Reuses browser instances across test files via a pool. Browsers are shared within the same Vitest worker, with contexts cleaned between files. Enabled by default.
+
+```typescript
+crossBrowserSuite("Tests", (test) => {
+  test("works", async ({ page }) => { ... });
+}, { sharedBrowser: true });
+```
+
+### Vitest Config for Max Speed
+
+For optimal E2E speed, run all tests in a single thread so the browser pool is shared:
+
+```typescript
+// vitest.config.ts
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
+  test: {
+    pool: "threads",
+    poolOptions: {
+      threads: { singleThread: true },
+    },
+  },
+});
+```
+
+This gives **~3x speedup** (34s → 12s for 153 tests) by eliminating redundant browser launches.
 
 ## Combining with Vitest
 
